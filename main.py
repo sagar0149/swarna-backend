@@ -26,7 +26,7 @@ class Product(Base):
     description = Column(String)
     image_urls = Column(String, nullable=True)
 
-# 2. NEW: Store Settings Table
+# 2. Store Settings Table
 class StoreSettings(Base):
     __tablename__ = "store_settings"
     id = Column(Integer, primary_key=True, index=True)
@@ -75,7 +75,7 @@ async def create_product(
                 file_path = f"static/images/{unique_filename}"
                 with open(file_path, "wb") as buffer:
                     shutil.copyfileobj(image.file, buffer)
-                saved_urls.append(f"http://127.0.0.1:8001/{file_path}")
+                saved_urls.append(f"https://swarna-laxmi-furniture-udyog.onrender.com/{file_path}")
 
     image_urls_string = ",".join(saved_urls) if saved_urls else None
     new_product = Product(name=name, wood_type=wood_type, price=price, stock_quantity=stock_quantity, description=description, image_urls=image_urls_string)
@@ -99,7 +99,7 @@ async def update_product(
     if images and images[0].filename != '':
         if product.image_urls:
             for url in product.image_urls.split(","):
-                file_path = url.replace("http://127.0.0.1:8001/", "")
+                file_path = url.replace("https://swarna-laxmi-furniture-udyog.onrender.com/", "")
                 if os.path.exists(file_path): os.remove(file_path)
         saved_urls = []
         for image in images:
@@ -107,7 +107,7 @@ async def update_product(
             file_path = f"static/images/{unique_filename}"
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(image.file, buffer)
-            saved_urls.append(f"http://127.0.0.1:8001/{file_path}")
+            saved_urls.append(f"https://swarna-laxmi-furniture-udyog.onrender.com/{file_path}")
         product.image_urls = ",".join(saved_urls)
     
     db.commit()
@@ -120,7 +120,7 @@ def delete_product(product_id: int, db: Session = Depends(get_db)):
     if not product: raise HTTPException(status_code=404, detail="Product not found")
     if product.image_urls:
         for url in product.image_urls.split(","):
-            file_path = url.replace("http://127.0.0.1:8001/", "")
+            file_path = url.replace("https://swarna-laxmi-furniture-udyog.onrender.com/", "")
             if os.path.exists(file_path): os.remove(file_path)
     db.delete(product)
     db.commit()
