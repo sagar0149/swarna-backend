@@ -41,9 +41,12 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.add_middleware(
+aapp.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",  # Keeps local testing working
+        "https://swarna-laxmi-furniture.onrender.com"  # Your live frontend!
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
