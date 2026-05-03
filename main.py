@@ -41,11 +41,12 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-aapp.add_middleware(
+# === THE CORS FIX IS SAFELY APPLIED HERE ===
+app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",  # Keeps local testing working
-        "https://swarna-laxmi-furniture.onrender.com"  # Your live frontend!
+        "http://localhost:5173", 
+        "https://swarna-laxmi-furniture.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
